@@ -1,6 +1,11 @@
 import { get as getQuery } from "./get.js";
 
-export function createSQLiteStore(schema, db, config = {}) {
+type JSONAPIConfig = {
+	supportedParams: ("include" | "fields" | "sort" | "page" | "filter")[]
+	transport: any;
+}
+
+export function createJSONAPIStore(schema, config: JSONAPIConfig) {
 	const fullStoreConfig = {
 		...config,
 	};
@@ -9,7 +14,6 @@ export function createSQLiteStore(schema, db, config = {}) {
 		get: async (query) =>
 			getQuery(query, {
 				config: fullStoreConfig,
-				db,
 				schema,
 				query,
 			}),
