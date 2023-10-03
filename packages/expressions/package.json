@@ -1,6 +1,6 @@
 {
 	"name": "@data-prism/expressions",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"type": "module",
 	"main": "./dist/src/expressions.js",
 	"types": "./dist/src/expressions.d.ts",

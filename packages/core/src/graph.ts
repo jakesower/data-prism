@@ -33,7 +33,9 @@ export function createGraph<S extends Schema>(
 	const fullConfig = { ...defaultConfig, ...config };
 	const { expressionEngine } = fullConfig;
 
-	const data = { ...mapValues(schema.resources, () => ({})), ...resources };
+	const data = structuredClone({
+		...mapValues(schema.resources, (_, resType) => resources[resType] ?? {}),
+	});
 
 	Object.entries(data).forEach(([resType, ressById]) => {
 		Object.entries(ressById).forEach(([resId, res]) => {

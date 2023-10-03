@@ -1,18 +1,15 @@
-import { get, mapValues } from "lodash-es";
-import { defaultExpressionEngine } from "@data-prism/expressions";
-
-export function buildWhereExpression(whereClause: object) {
-	if (defaultExpressionEngine.isExpression(whereClause)) {
+export function buildWhereExpression(whereClause: object, expressionEngine) {
+	if (expressionEngine.isExpression(whereClause)) {
 		const [name, params] = Object.entries(whereClause)[0] as any[];
 		const built = Array.isArray(params)
-			? params.map(buildWhereExpression)
-			: buildWhereExpression(params);
+			? params.map((p) => buildWhereExpression(p, expressionEngine))
+			: buildWhereExpression(params, expressionEngine);
 
 		return { [name]: built };
 	}
 
 	const whereExpressions = Object.entries(whereClause).map(([propPath, expr]) =>
-		defaultExpressionEngine.isExpression(expr)
+		expressionEngine.isExpression(expr)
 			? { $pipe: [{ $get: propPath }, expr] }
 			: { $pipe: [{ $get: propPath }, { $eq: expr }] },
 	);

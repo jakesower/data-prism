@@ -13,7 +13,6 @@ type LooseSchemaProperty = {
 
 type LooseSchemaRelationship = {
 	readonly resource: string;
-	// readonly cardinality: "one" | "many";
 	readonly cardinality: string;
 	readonly inverse?: string;
 };
@@ -93,12 +92,3 @@ export function compileSchema<S extends Schema>(schema: S): CompiledSchema<S> {
 		})),
 	} as CompiledSchema<S>;
 }
-
-// export function compileSchema<S extends Schema>(rawSchema: S): CompiledSchema<S> {
-// 	const resources = mapValues(rawSchema.resources, (resDef) => ({
-// 		idField: "id",
-// 		...resDef,
-// 	}));
-
-// 	return { ...rawSchema, resources };
-// }

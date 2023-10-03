@@ -1,6 +1,5 @@
 import { mapValues, omit, orderBy } from "lodash-es";
 import { applyOrMap } from "@data-prism/utils";
-import { defaultExpressionEngine } from "@data-prism/expressions";
 import { MultiResult, Result } from "../result.js";
 import { Schema } from "../schema.js";
 import { RootQuery } from "../query.js";
@@ -19,6 +18,8 @@ export function runTreeQuery<S extends Schema, Q extends RootQuery<S>>(
 	},
 ): Result<Q> {
 	const { schema, data, config } = context;
+	const { expressionEngine } = config;
+
 	const resDef = schema.resources[query.type];
 
 	if (query.id && !data[query.type][query.id]) return null;
@@ -39,11 +40,8 @@ export function runTreeQuery<S extends Schema, Q extends RootQuery<S>>(
 	// these are in order of execution
 	const operationDefinitions: { [k: string]: GetOperation } = {
 		where(results: MultiResult): MultiResult {
-			const whereExpression = buildWhereExpression(query.where);
-
-			return results.filter((result) =>
-				defaultExpressionEngine.apply(whereExpression, result),
-			);
+			const whereExpression = buildWhereExpression(query.where, expressionEngine);
+			return results.filter((result) => expressionEngine.apply(whereExpression, result));
 		},
 		order(results: MultiResult): MultiResult {
 			const order = Array.isArray(query.order) ? query.order : [query.order];
@@ -53,13 +51,13 @@ export function runTreeQuery<S extends Schema, Q extends RootQuery<S>>(
 			return orderBy(results, properties, dirs);
 		},
 		limit(results: MultiResult): MultiResult {
-			const { limit = 0, offset = 0 } = query;
+			const { limit, offset = 0 } = query;
 			if (limit < 1) throw new Error("`limit` must be at least 1");
 
 			return results.slice(offset, limit + offset);
 		},
 		offset(results: MultiResult): MultiResult {
-			if ((query.offset ?? 0) < 0) throw new Error("`offset` must be at least 0");
+			if (query.offset < 0) throw new Error("`offset` must be at least 0");
 			return query.limit ? results : results.slice(query.offset);
 		},
 		select(results) {
@@ -88,8 +86,8 @@ export function runTreeQuery<S extends Schema, Q extends RootQuery<S>>(
 				}
 
 				// expression
-				if (defaultExpressionEngine.isExpression(propQuery)) {
-					return createExpressionProjector(propQuery);
+				if (expressionEngine.isExpression(propQuery)) {
+					return createExpressionProjector(propQuery, expressionEngine);
 				}
 
 				// subquery
@@ -127,8 +125,7 @@ export function runTreeQuery<S extends Schema, Q extends RootQuery<S>>(
 		: Object.values(data[query.type]);
 
 	const processed = Object.entries(usedOperationDefinitions).reduce(
-		(acc, [opName, fn]) =>
-			opName in query || opName === "select" ? fn(acc) : acc,
+		(acc, [opName, fn]) => (opName in query || opName === "select" ? fn(acc) : acc),
 		results,
 	);
 

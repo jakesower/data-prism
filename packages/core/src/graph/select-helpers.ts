@@ -7,8 +7,8 @@ export type Projection = {
 
 const TERMINAL_EXPRESSIONS = ["$get", "$prop", "$literal"];
 
-function distributeStrings(expression) {
-	const { isExpression } = defaultExpressionEngine;
+function distributeStrings(expression, expressionEngine) {
+	const { isExpression } = expressionEngine;
 
 	if (typeof expression === "string") {
 		const [iteratee, ...rest] = expression.split(".$.");
@@ -17,7 +17,7 @@ function distributeStrings(expression) {
 		return {
 			$pipe: [
 				{ $get: iteratee },
-				{ $flatMap: distributeStrings(rest.join(".$.")) },
+				{ $flatMap: distributeStrings(rest.join(".$."), expressionEngine) },
 				{ $filter: { $defined: {} } },
 			],
 		};
@@ -35,7 +35,7 @@ function distributeStrings(expression) {
 
 	return TERMINAL_EXPRESSIONS.includes(expressionName)
 		? expression
-		: { [expressionName]: distributeStrings(expressionArgs) };
+		: { [expressionName]: distributeStrings(expressionArgs, expressionEngine) };
 }
 
 /**
@@ -90,9 +90,9 @@ export function projectionQueryProperties(projection: Projection) {
 	return query;
 }
 
-export function createExpressionProjector(expression: Expression) {
-	const { apply } = defaultExpressionEngine;
-	const expr = distributeStrings(expression);
+export function createExpressionProjector(expression: Expression, expressionEngine) {
+	const { apply } = expressionEngine;
+	const expr = distributeStrings(expression, expressionEngine);
 
 	return (result) => apply(expr, result);
 }

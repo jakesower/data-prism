@@ -1,5 +1,5 @@
 export { projectionQueryProperties } from "./graph/select-helpers.js";
-export { ensureValidQuery, flattenQuery } from "./query.js";
+export { createScopedSchema, ensureValidQuery, flattenQuery } from "./query.js";
 export { compileSchema } from "./schema.js";
 export { createGraph } from "./graph.js";
 export type {
