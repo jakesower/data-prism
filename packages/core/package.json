@@ -1,6 +1,6 @@
 {
 	"name": "@data-prism/core",
-	"version": "0.0.15",
+	"version": "0.0.17",
 	"type": "module",
 	"main": "./dist/core.js",
 	"types": "./dist/core.d.ts",
@@ -31,7 +31,7 @@
 	"private": false,
 	"dependencies": {
 		"@data-prism/expressions": "^0.0.9",
-		"@data-prism/utils": "^0.0.3",
+		"@data-prism/utils": "^0.0.6",
 		"lodash-es": "^4.17.21"
 	}
 }

@@ -17,15 +17,25 @@ export type Store<S extends Schema> = {
 		query: RootQuery<S>,
 	) => (args?: object) => Promise<Result<Q>>;
 	get: <Q extends RootQuery<S>>(query: Q, args?: object) => Promise<Result<Q>>;
+	schema: S;
 	seed: (seedData: object) => void;
 	setState: (data: object) => void;
 };
 
-export function createMemoryStore<S extends Schema>(schema: S): Store<S> {
+type StoreOptions = {
+	initialData?: object;
+};
+
+export function createMemoryStore<S extends Schema>(
+	schema: S,
+	options: StoreOptions = {},
+): Store<S> {
 	const compiledSchema = compileSchema(schema);
 	const expressionEngine = defaultExpressionEngine;
 
-	let graph = createGraph(compiledSchema, {}, { expressionEngine });
+	let graph = createGraph(compiledSchema, options.initialData ?? {}, {
+		expressionEngine,
+	});
 
 	// mutates
 	const seed = (seedData) => {
@@ -65,5 +75,5 @@ export function createMemoryStore<S extends Schema>(schema: S): Store<S> {
 		return (args = {}) => Promise.resolve(runQuery({ ...query, ...args }));
 	};
 
-	return { compileQuery, get, seed, setState };
+	return { compileQuery, get, schema, seed, setState };
 }

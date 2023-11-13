@@ -72,10 +72,10 @@ Example queries:
 ```json
 {
   "type": "trips",
-  "properties" {
+  "select" {
     "arrives_at": "arrival_time",
     "trains": {
-      "properties": {
+      "select": {
         "name": "name"
       }
     }
@@ -103,10 +103,10 @@ For example:
 ```json
 {
   "type": "trips",
-  "properties" {
+  "select" {
     "arrives_at": "arrival_time",
     "trains": {
-      "properties": {
+      "select": {
         "name": "name"
       }
     }
@@ -115,14 +115,14 @@ For example:
     "class": "first"
   },
   "order": [
-    { "property": "arrival_time", "direction": "asc" }
+    { "arrival_time": "asc" }
   ]
   "limit": 1,
   "offset": 5
 }
 ```
 
-## Upcoming Features
+## Possible Upcoming Features
 
 Many arguments can make use of expressions, which are described later.
 
@@ -131,7 +131,7 @@ Queries also have the ability project and do limited aggregation.
 ```json
 {
   "type": "trains",
-  "properties": {
+  "select": {
     "name": "name",
     "trip_count": { "$count": "trips" },
     "mean_cost": { "$mean": "trips.$.cost" },
