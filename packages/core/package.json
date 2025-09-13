@@ -1,6 +1,7 @@
 {
 	"name": "@data-prism/core",
-	"version": "0.2.0",
+	"version": "0.2.1",
+	"deprecated": "This package has been renamed to '@spectragraph/core'. Please use '@spectragraph/core' instead.",
 	"type": "module",
 	"main": "./dist/index.cjs.js",
 	"module": "./dist/index.esm.js",

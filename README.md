@@ -1,5 +1,13 @@
 # Data Prism
 
+> **⚠️ DEPRECATED: This package has been renamed to `spectragraph`**
+>
+> This repository is no longer maintained. Please migrate to the new package:
+> - **New repository:** [spectragraph](https://github.com/jakesower/spectragraph)
+> - **New npm packages:** `@spectragraph/*` instead of `@data-prism/*`
+>
+> All future development will happen in the spectragraph repository.
+
 A unified, expressive query language for multiple data sources. Query databases, APIs, and in-memory data with the same syntax, automatic relationship linking, and powerful expressions.
 
 ## Quick Example

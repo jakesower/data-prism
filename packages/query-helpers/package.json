@@ -1,6 +1,7 @@
 {
 	"name": "@data-prism/query-helpers",
-	"version": "0.1.0",
+	"version": "0.1.1",
+	"deprecated": "This package has been renamed to '@spectragraph/query-helpers'. Please use '@spectragraph/query-helpers' instead.",
 	"type": "module",
 	"main": "./dist/index.cjs.js",
 	"module": "./dist/index.esm.js",
@@ -19,7 +20,6 @@
 		"format:fix": "prettier --write \"{src,test}/**/*.{js,jsx,ts,tsx,json,css,md}\"",
 		"lint": "eslint src/ test/",
 		"lint:fix": "eslint --fix src/ test/",
-		"prepublishOnly": "npm run lint && npm run test",
 		"test": "NODE_ENV=test vitest run --coverage",
 		"test:watch": "vitest"
 	},

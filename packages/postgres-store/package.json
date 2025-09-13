@@ -1,6 +1,7 @@
 {
 	"name": "@data-prism/postgres-store",
-	"version": "0.0.24",
+	"version": "0.0.25",
+	"deprecated": "This package has been renamed to '@spectragraph/postgres-store'. Please use '@spectragraph/postgres-store' instead.",
 	"type": "module",
 	"main": "./dist/postgres-store.cjs.js",
 	"module": "./dist/postgres-store.esm.js",

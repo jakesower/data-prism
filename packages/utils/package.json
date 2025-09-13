@@ -1,6 +1,7 @@
 {
 	"name": "@data-prism/utils",
-	"version": "0.0.7",
+	"version": "0.0.8",
+	"deprecated": "This package has been renamed to '@spectragraph/utils'. Please use '@spectragraph/utils' instead.",
 	"type": "module",
 	"main": "./dist/index.cjs.js",
 	"module": "./dist/index.esm.js",

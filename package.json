@@ -6,6 +6,7 @@
 	],
 	"type": "module",
 	"version": "1.0.0",
+	"deprecated": "This package has been renamed to 'spectragraph'. Please use 'spectragraph' instead.",
 	"scripts": {
 		"changeset": "changeset",
 		"version-packages": "changeset version",
